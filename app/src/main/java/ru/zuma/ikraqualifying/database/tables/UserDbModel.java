@@ -3,15 +3,16 @@ package ru.zuma.ikraqualifying.database.tables;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import ru.zuma.ikraqualifying.database.AppDatabase;
 import ru.zuma.ikraqualifying.database.model.User;
 
 @Table(database = AppDatabase.class)
-public class UserDbModel {
+public class UserDbModel extends BaseModel {
 
     @PrimaryKey(autoincrement = true)
-    int id;
+    long id;
 
     @Column
     String name;
@@ -47,11 +48,11 @@ public class UserDbModel {
         return new User(id, name, secondName, thirdName, group, about);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -6,7 +6,7 @@ package ru.zuma.ikraqualifying.database.model;
 
 public class User {
 
-    private int id;
+    private long id = 0;
     private String name;
     private String secondName;
     private String thirdName;
@@ -17,7 +17,7 @@ public class User {
     {
     }
 
-    public User(int id, String name, String secondName, String thirdName, String group, String about) {
+    public User(long id, String name, String secondName, String thirdName, String group, String about) {
         this.id = id;
         this.name = name;
         this.secondName = secondName;
@@ -26,11 +26,19 @@ public class User {
         this.about = about;
     }
 
-    public int getId() {
+    public User(String name, String secondName, String thirdName, String group, String about) {
+        this.name = name;
+        this.secondName = secondName;
+        this.thirdName = thirdName;
+        this.group = group;
+        this.about = about;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
