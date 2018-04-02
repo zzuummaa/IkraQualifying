@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">IkraQualifying</string>
+    <string name="app_name">Наша комнда</string>
+    <string name="participant_info_title">Информация об участнике</string>
+    <string name="ikra_kabachkovaya">Икра Кабачковая</string>
+    <string name="list_of_participants">Список участников</string>
+    <string name="info_about_participant">Информация об участнике</string>
+    <string name="participant">Участник</string>
+    <string name="group">Группа</string>
+    <string name="about_me">О себе</string>
 </resources>
