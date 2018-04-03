@@ -17,6 +17,9 @@ import java.io.IOException;
 
 import ru.zuma.ikraqualifying.App;
 
+/**
+ * Класс для работы с изображениями
+ */
 public class ImageDecoder {
 
     public static final int MAX_HEIGHT_DPI = 180;
@@ -26,9 +29,18 @@ public class ImageDecoder {
 
     static {
         MAX_HEIGHT = (int) (MAX_HEIGHT_DPI * Resources.getSystem().getDisplayMetrics().density);
-        MAX_WIDTH = 5 * MAX_HEIGHT;
+        MAX_WIDTH = MAX_HEIGHT;
     }
 
+    /**
+     * Читает данные изображения и изменяет размер изображения
+     * под требуемый
+     *
+     * @param path полный путь к файлу
+     * @param reqWidth требуемая ширина выходного изображения
+     * @param reqHeight требуемая высота выходного изображения
+     * @return выходное изображение с подогнанным размером
+     */
     public static Bitmap decodeSampledBitmapFromResource(String path,
                                                          int reqWidth, int reqHeight) {
 
@@ -48,6 +60,16 @@ public class ImageDecoder {
         return BitmapFactory.decodeFile(path, options);
     }
 
+    /**
+     * Читает данные изображения и изменяет размер изображения
+     * под требуемый
+     *
+     * @param res
+     * @param id
+     * @param reqWidth требуемая ширина выходного изображения
+     * @param reqHeight требуемая высота выходного изображения
+     * @return выходное изображение с подогнанным размером
+     */
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int id,
                                                          int reqWidth, int reqHeight) {
 
@@ -67,6 +89,14 @@ public class ImageDecoder {
         return BitmapFactory.decodeResource(res, id, options);
     }
 
+    /**
+     * Читает данные изображения и изменяет размер изображения
+     * под специальный размер для отображения на экран
+     *
+     * @param res
+     * @param id
+     * @return
+     */
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int id) {
         return decodeSampledBitmapFromResource(res, id, MAX_WIDTH, MAX_HEIGHT);
     }

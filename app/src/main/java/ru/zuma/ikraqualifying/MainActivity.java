@@ -59,8 +59,19 @@ public class MainActivity extends AppCompatActivity {
         lvParticipants.setAdapter(adapter);
 
         lvParticipants.setOnItemClickListener(new OnItemClickListener() {
+            long prevTime;
+            long cd = 600;
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Обрабатываем событие только раз в cd миллисекунд
+                long currTime = System.currentTimeMillis();
+                if (currTime - prevTime < cd) {
+                    return;
+                }
+                prevTime = currTime;
+
                 Log.d(LOG_TAG, "list onItemClick in pos=" + position + ", id=" + id);
 
                 Intent intent = new Intent(MainActivity.this, ParticipantInfoActivity.class);
