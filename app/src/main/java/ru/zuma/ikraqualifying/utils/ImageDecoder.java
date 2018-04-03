@@ -4,10 +4,30 @@ package ru.zuma.ikraqualifying.utils;
  * Created by Stephan on 03.04.2018.
  */
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import ru.zuma.ikraqualifying.App;
+
 public class ImageDecoder {
+
+    public static final int MAX_HEIGHT_DPI = 180;
+
+    public static final int MAX_HEIGHT;
+    public static final int MAX_WIDTH;
+
+    static {
+        MAX_HEIGHT = (int) (MAX_HEIGHT_DPI * Resources.getSystem().getDisplayMetrics().density);
+        MAX_WIDTH = 5 * MAX_HEIGHT;
+    }
 
     public static Bitmap decodeSampledBitmapFromResource(String path,
                                                          int reqWidth, int reqHeight) {
@@ -26,6 +46,29 @@ public class ImageDecoder {
         // Используем конфигурацию без прозрачности
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         return BitmapFactory.decodeFile(path, options);
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int id,
+                                                         int reqWidth, int reqHeight) {
+
+        // Читаем с inJustDecodeBounds=true для определения размеров
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, id, options);
+
+        // Вычисляем inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth,
+                reqHeight);
+
+        // Читаем с использованием inSampleSize коэффициента
+        options.inJustDecodeBounds = false;
+        // Используем конфигурацию без прозрачности
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        return BitmapFactory.decodeResource(res, id, options);
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int id) {
+        return decodeSampledBitmapFromResource(res, id, MAX_WIDTH, MAX_HEIGHT);
     }
 
     public static int calculateInSampleSize(BitmapFactory.Options options,
@@ -51,4 +94,25 @@ public class ImageDecoder {
         return inSampleSize;
     }
 
+    /**
+     * Сохраняет изображение Bitmap в файл.
+     *
+     * @param bitmap Bitmap изображение
+     * @param quality Качество (характеризует отсутствие потерь)
+     * @param fileName Имя файла
+     * @return Файл с изображением
+     * @throws IOException
+     */
+    public static File saveBitmapToFile(Bitmap bitmap, int quality, String fileName) throws IOException {
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
+
+        FileOutputStream outputStream = App.getContext().openFileOutput(fileName,
+                Context.MODE_PRIVATE);
+        outputStream.write(byteArrayOutputStream.toByteArray());
+        outputStream.close();
+
+        return new File(App.getContext().getFilesDir(), fileName);
+    }
 }

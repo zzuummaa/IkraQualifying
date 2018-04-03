@@ -76,6 +76,7 @@ public class DbManager {
         newDbUser.setThirdName(user.getThirdName());
         newDbUser.setGroup(user.getGroup());
         newDbUser.setAbout(user.getAbout());
+        newDbUser.setImage(user.getImage());
 
         long newId = newDbUser.insert();
 

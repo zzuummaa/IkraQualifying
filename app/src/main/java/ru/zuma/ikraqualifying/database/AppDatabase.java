@@ -23,6 +23,7 @@ import ru.zuma.ikraqualifying.App;
 import ru.zuma.ikraqualifying.R;
 import ru.zuma.ikraqualifying.database.model.User;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel;
+import ru.zuma.ikraqualifying.utils.ImageDecoder;
 
 /**
  * Конфигурации базы данных в
@@ -31,6 +32,8 @@ import ru.zuma.ikraqualifying.database.tables.UserDbModel;
  */
 @Database(name = AppDatabase.NAME, version = AppDatabase.VERSION)
 public class AppDatabase {
+
+    private static final String TAG = AppDatabase.class.getName();
 
     public static final String NAME = "AppDatabase";
 
@@ -48,6 +51,7 @@ public class AppDatabase {
 
         @Override
         public void migrate(@NonNull DatabaseWrapper database) {
+
             List<User> users = createDevelopers();
             for (User user : users) {
                 UserDbModel dbUser = new UserDbModel(user);
@@ -62,7 +66,8 @@ public class AppDatabase {
          * @return Список пользователей-разработчиков
          */
         private List<User> createDevelopers() {
-            User stepa = createUser("Степан", "Фоменко", "Отчество",
+
+            User stepa = createUser("Степан", "Фоменко", "Владимирович",
                     "СМ5-62", "О Степе", R.drawable.stepa, "strepa.jpg");
             User artem = createUser("Артем", "Ткаченко", "Алексеевич",
                     "ИУ7", "Об Артеме", R.drawable.artem, "artem.jpg");
@@ -93,22 +98,18 @@ public class AppDatabase {
          */
         private User createUser(String name, String secondName, String thirdName,
                                 String group, String about, int imageId, String imageFileName) {
+
             User user = new User(name, secondName, thirdName, group, about);
-            Bitmap bitmap = BitmapFactory.decodeResource(App.getContext().getResources(), imageId);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+
+            Bitmap bitmap = ImageDecoder.decodeSampledBitmapFromResource(
+                    App.getContext().getResources(), imageId);
 
             String image = null;
             try {
-                FileOutputStream outputStream = App.getContext().openFileOutput(imageFileName,
-                        Context.MODE_PRIVATE);
-                outputStream.write(byteArrayOutputStream.toByteArray());
-                outputStream.close();
-                image = new File(App.getContext().getFilesDir(), imageFileName).getAbsolutePath();
-            } catch (FileNotFoundException e) {
-                Log.d(AppDatabase.class.getName(), e.getMessage(), e);
+                File imageFile = ImageDecoder.saveBitmapToFile(bitmap, 60, imageFileName);
+                image = imageFile.getAbsolutePath();
             } catch (IOException e) {
-                Log.d(AppDatabase.class.getName(), e.getMessage(), e);
+                Log.e(TAG, e.getMessage(), e);
             }
             user.setImage(image);
 
