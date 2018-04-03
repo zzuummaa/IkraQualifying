@@ -1,10 +1,12 @@
 package ru.zuma.ikraqualifying;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import java.net.URI;
 
 import ru.zuma.ikraqualifying.database.DbManager;
 import ru.zuma.ikraqualifying.database.model.User;
+import ru.zuma.ikraqualifying.utils.ImageDecoder;
 
 public class ParticipantInfoActivity extends AppCompatActivity {
 
@@ -24,7 +27,7 @@ public class ParticipantInfoActivity extends AppCompatActivity {
         TextView fullName = (TextView) findViewById(R.id.tvFullName);
         TextView group = (TextView) findViewById(R.id.tvGroup);
         TextView aboutMe = (TextView) findViewById(R.id.tvAboutMe);
-        ImageView imageView = (ImageView) findViewById(R.id.tvImage);
+        final ImageView imageView = (ImageView) findViewById(R.id.tvImage);
 
         long id = getIntent().getLongExtra("participant_id", -1);
         User user = DbManager.getInstance().getUser(id);
@@ -34,10 +37,26 @@ public class ParticipantInfoActivity extends AppCompatActivity {
             return;
         }
 
-        String image = user.getImage();
-        if (image != null) {
-            imageView.setImageURI(Uri.parse(image));
-        }
+        final String image = user.getImage();
+
+        // Устанавливаем изображение, как только будут известны размеры imageView
+        imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (image != null) {
+                    int reqWidth = imageView.getWidth();
+                    int reqHeight = imageView.getHeight();
+                    Log.d(TAG, "set image with reqWidth=" + reqWidth + ", reqHeight=" + reqHeight);
+                    Bitmap decodedImage = ImageDecoder.decodeSampledBitmapFromResource(
+                            image,
+                            reqWidth,
+                            reqHeight
+                    );
+                    imageView.setImageBitmap(decodedImage);
+                }
+            }
+        });
+
 
         String name = user.getName() + " " + user.getSecondName() + " " + user.getThirdName();
         fullName.setText(name);
