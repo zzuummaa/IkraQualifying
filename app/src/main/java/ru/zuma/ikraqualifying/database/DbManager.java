@@ -61,17 +61,6 @@ public class DbManager {
     }
 
     /**
-     * Возрващает изображение пользователя.
-     * Не работает, нужно переделать!
-     * @param id
-     * @return
-     */
-    @Deprecated
-    public Bitmap getUserImage(final long id) {
-        return null;
-    }
-
-    /**
      * Добавляет нового пользователя в базу.
      * @param user Пользователь для добавления
      * @return ID новой записи в базе. ID пользователя, переданного в метод, игнорируется.

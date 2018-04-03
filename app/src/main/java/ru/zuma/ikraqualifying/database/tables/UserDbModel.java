@@ -44,6 +44,7 @@ public class UserDbModel extends BaseModel {
         this.thirdName = user.getThirdName();
         this.group = user.getGroup();
         this.about = user.getAbout();
+        this.image = user.getImage();
     }
 
     public User toUser()

@@ -1,30 +1,27 @@
 package ru.zuma.ikraqualifying.database;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.TransactionTooLargeException;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 import com.raizlabs.android.dbflow.annotation.Migration;
-import com.raizlabs.android.dbflow.data.Blob;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
-import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import ru.zuma.ikraqualifying.App;
 import ru.zuma.ikraqualifying.R;
+import ru.zuma.ikraqualifying.database.model.User;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel;
 
 /**
@@ -44,36 +41,51 @@ public class AppDatabase {
 
         @Override
         public void migrate(@NonNull DatabaseWrapper database) {
-            UserDbModel initUser = new UserDbModel();
-            initUser.setName("Test");
-            initUser.setSecondName("User");
-            initUser.setThirdName("OfUser");
-            initUser.setGroup("H11");
-            initUser.setAbout("Ok!");
+            List<User> users = createUsers();
+            for (User user : users) {
+                UserDbModel dbUser = new UserDbModel(user);
+                dbUser.insert(database);
+            }
+        }
 
-            Context context = App.getContext();
+        private List<User> createUsers() {
+            User stepa = createUser("Степан", "Фоменко", "Отчество",
+                    "СМ5-62", "О Степе", R.drawable.stepa, "strepa.jpg");
+            User artem = createUser("Артем", "Ткаченко", "Алексеевич",
+                    "ИУ7", "Об Артеме", R.drawable.artem, "artem.jpg");
+            User timur = createUser("Тимур", "Ахтямов", "Ришадович",
+                    "СМ5-61", "О Тимуре", R.drawable.timur, "timur.jpg");
 
-            Bitmap bitmap = BitmapFactory.decodeResource(App.getContext().getResources(),
-                    R.drawable.photo1);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            final byte[] bytes = stream.toByteArray();
+            List<User> users = new ArrayList<>();
+            users.add(stepa);
+            users.add(artem);
+            users.add(timur);
+
+            return users;
+        }
+
+        private User createUser(String name, String secondName, String thirdName,
+                                String group, String about, int imageId, String imageFileName) {
+            User user = new User(name, secondName, thirdName, group, about);
+            Bitmap bitmap = BitmapFactory.decodeResource(App.getContext().getResources(), imageId);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
 
             String image = null;
             try {
-                FileOutputStream outputStream = context.openFileOutput("photo1.jpg",
+                FileOutputStream outputStream = App.getContext().openFileOutput(imageFileName,
                         Context.MODE_PRIVATE);
-                outputStream.write(bytes);
+                outputStream.write(byteArrayOutputStream.toByteArray());
                 outputStream.close();
-                image = new File(context.getFilesDir(), "photo1.jpg").getAbsolutePath();
+                image = new File(App.getContext().getFilesDir(), imageFileName).getAbsolutePath();
             } catch (FileNotFoundException e) {
                 Log.d(AppDatabase.class.getName(), e.getMessage(), e);
             } catch (IOException e) {
                 Log.d(AppDatabase.class.getName(), e.getMessage(), e);
             }
+            user.setImage(image);
 
-            initUser.setImage(image);
-            initUser.insert(database);
+            return user;
         }
     }
 }
