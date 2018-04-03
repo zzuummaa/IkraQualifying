@@ -7,6 +7,7 @@ import java.util.List;
 
 import ru.zuma.ikraqualifying.database.model.User;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel;
+import ru.zuma.ikraqualifying.database.tables.UserDbModel_Table;
 
 public class DbManager {
     private static final DbManager ourInstance = new DbManager();
@@ -20,11 +21,13 @@ public class DbManager {
 
     /**
      * Получает пользователей из базы данных.
-     * @return Список пользователей
+     * @return Список пользователей, отсортированный
+     * по именам
      */
     public List<User> getUsers() {
         List<UserDbModel> dbUsers = SQLite.select()
                                             .from(UserDbModel.class)
+                                            .orderBy(UserDbModel_Table.name, true)
                                             .queryList();
 
         List<User> users = new ArrayList<>();
@@ -33,6 +36,24 @@ public class DbManager {
         }
 
         return users;
+    }
+
+
+    /**
+     * Получает пользователя из базы данных.
+     * @param id ID пользователя
+     * @return Найденный пользователь, либо null, если
+     * пользователь не найден
+     */
+    public User getUser(final long id) {
+        UserDbModel dbUser = SQLite.select()
+                                        .from(UserDbModel.class)
+                                        .where(UserDbModel_Table.id.eq(id))
+                                        .querySingle();
+
+        if (dbUser == null)
+            return null;
+        return dbUser.toUser();
     }
 
     /**

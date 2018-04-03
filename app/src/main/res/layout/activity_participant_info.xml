@@ -25,7 +25,6 @@
         android:id="@+id/tvFullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Фоменко Степан Владимирович"
         android:textSize="12dp"
         android:textColor="#000000"/>
 
@@ -46,7 +45,6 @@
         android:id="@+id/tvGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="СМ5-62"
         android:textSize="12dp"
         android:textColor="#000000"/>
 
@@ -67,7 +65,6 @@
         android:id="@+id/tvAboutMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Люблю походы в горы, играть на гитаре и дзюдо. Жизнь создана для приключений!"
         android:textSize="12dp"
         android:textColor="#000000"/>
 

@@ -16,30 +16,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.zuma.ikraqualifying.database.DbManager;
+import ru.zuma.ikraqualifying.database.model.User;
+
 import static android.widget.AdapterView.*;
 
 public class MainActivity extends AppCompatActivity {
     final String LOG_TAG = "MainActivity";
 
     // Convert list key to dataBase key
-    HashMap<Integer, Integer> toDataBaseKey;
+    HashMap<Integer, Long> toDataBaseKey;
 
-    List<String> namesList;
-    String[] names = { "Иван", "Марья", "Петр", "Антон", "Даша", "Борис",
-            "Костя", "Игорь", "Анна", "Денис", "Андрей" };
+    List<String> namesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Arrays.sort(names);
-        namesList = Arrays.asList(names);
-        toDataBaseKey = new HashMap<>();
+        List<User> users = DbManager.getInstance().getUsers();
 
         // Put data like this: toDataBaseKey.put(listIndex, dataBaseID);
-        for (int i = 0; i < namesList.size(); i++) {
-            toDataBaseKey.put(i, i);
+        toDataBaseKey = new HashMap<>();
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            namesList.add(user.getName());
+            toDataBaseKey.put(i, user.getId());
         }
 
         // находим список
