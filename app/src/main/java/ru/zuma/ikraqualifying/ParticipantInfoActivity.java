@@ -41,17 +41,23 @@ public class ParticipantInfoActivity extends AppCompatActivity {
 
         // Устанавливаем изображение, как только будут известны размеры imageView
         imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            String localImage;
+
             @Override
             public void onGlobalLayout() {
-                if (image != null) {
+                // Вызывается только один раз, пока localImage null
+                if (localImage == null && image != null) {
+                    localImage = image;
+
                     int reqWidth = imageView.getWidth();
                     int reqHeight = imageView.getHeight();
-                    Log.d(TAG, "set image with reqWidth=" + reqWidth + ", reqHeight=" + reqHeight);
                     Bitmap decodedImage = ImageDecoder.decodeSampledBitmapFromResource(
                             image,
                             reqWidth,
                             reqHeight
                     );
+                    Log.d(TAG, "set image with width=" + decodedImage.getWidth()
+                                               + ", height=" + decodedImage.getHeight());
                     imageView.setImageBitmap(decodedImage);
                 }
             }
