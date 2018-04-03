@@ -1,9 +1,9 @@
 package ru.zuma.ikraqualifying.database.model;
 
 /**
- * Created by sibirsky on 02.04.18.
+ * Класс, отображающий
+ * пользователей - участников команды.
  */
-
 public class User {
 
     private long id = 0;
@@ -12,6 +12,8 @@ public class User {
     private String thirdName;
     private String group;
     private String about;
+
+    /** URI фотографии пользователя */
     private String image;
 
     public User()

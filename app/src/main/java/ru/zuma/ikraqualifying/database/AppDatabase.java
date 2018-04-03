@@ -36,19 +36,32 @@ public class AppDatabase {
 
     public static final int VERSION = 1;
 
+    /**
+     * Миграция с нулевой версии на первую.
+     * В контексте DBFlow, нулевая версия
+     * означает отсутствие БД. Таким образом
+     * реализуется начальное заполнение базы
+     * при первом запуске приложений.
+     */
     @Migration(version = 0, database = AppDatabase.class)
     public static class InitMigration extends BaseMigration {
 
         @Override
         public void migrate(@NonNull DatabaseWrapper database) {
-            List<User> users = createUsers();
+            List<User> users = createDevelopers();
             for (User user : users) {
                 UserDbModel dbUser = new UserDbModel(user);
                 dbUser.insert(database);
             }
         }
 
-        private List<User> createUsers() {
+        /**
+         * Создает список разработчиков
+         * (участников команды).
+         *
+         * @return Список пользователей-разработчиков
+         */
+        private List<User> createDevelopers() {
             User stepa = createUser("Степан", "Фоменко", "Отчество",
                     "СМ5-62", "О Степе", R.drawable.stepa, "strepa.jpg");
             User artem = createUser("Артем", "Ткаченко", "Алексеевич",
@@ -64,6 +77,20 @@ public class AppDatabase {
             return users;
         }
 
+        /**
+         * Создает пользователя и копирует
+         * его изображение из ресурсов в
+         * файловое хранилище.
+         *
+         * @param name Имя пользователя
+         * @param secondName Фамилия пользователя
+         * @param thirdName Отчество пользователя
+         * @param group Учебная группа пользователя
+         * @param about Информация о пользователе
+         * @param imageId ID ресурса - фото пользователя
+         * @param imageFileName Имя файла, в котором будет сохранено изображение
+         * @return Объект пользователя
+         */
         private User createUser(String name, String secondName, String thirdName,
                                 String group, String about, int imageId, String imageFileName) {
             User user = new User(name, secondName, thirdName, group, about);

@@ -21,6 +21,10 @@ import ru.zuma.ikraqualifying.database.model.User;
 
 import static android.widget.AdapterView.*;
 
+/**
+ * Главная активность приложения.
+ * Содержит список участников команды.
+ */
 public class MainActivity extends AppCompatActivity {
     final String LOG_TAG = "MainActivity";
 

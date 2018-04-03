@@ -8,8 +8,9 @@ import com.raizlabs.android.dbflow.config.FlowManager;
 
 /**
  * Класс Android-приложения.
- * Необходим для инициализации
- * ORM DBFlow.
+ * Реализация необходима
+ * для инициализации ORM DBFlow
+ * и первичного заполнения базы.
  */
 public class App extends Application {
 

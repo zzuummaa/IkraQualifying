@@ -1,18 +1,18 @@
 package ru.zuma.ikraqualifying.database;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.zuma.ikraqualifying.R;
 import ru.zuma.ikraqualifying.database.model.User;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel_Table;
 
+/**
+ * Класс, отвечающий за взаимодействие
+ * с базой данных.
+ */
 public class DbManager {
     private static final DbManager ourInstance = new DbManager();
 
@@ -24,7 +24,8 @@ public class DbManager {
     }
 
     /**
-     * Получает пользователей из базы данных.
+     * Получает пользователей (участника) из базы данных.
+     *
      * @return Список пользователей, отсортированный
      * по именам
      */
@@ -44,7 +45,8 @@ public class DbManager {
 
 
     /**
-     * Получает пользователя из базы данных.
+     * Получает пользователя (участника) из базы данных.
+     *
      * @param id ID пользователя
      * @return Найденный пользователь, либо null, если
      * пользователь не найден
@@ -61,7 +63,8 @@ public class DbManager {
     }
 
     /**
-     * Добавляет нового пользователя в базу.
+     * Добавляет нового пользователя (участника) в базу.
+     *
      * @param user Пользователь для добавления
      * @return ID новой записи в базе. ID пользователя, переданного в метод, игнорируется.
      */

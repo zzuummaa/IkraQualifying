@@ -8,6 +8,13 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import ru.zuma.ikraqualifying.database.AppDatabase;
 import ru.zuma.ikraqualifying.database.model.User;
 
+/**
+ * Класс, отвечающий за представление
+ * пользователей в базе данных, а
+ * также за обработку запросов на
+ * добавление, изменение и удаление
+ * пользователей.
+ */
 @Table(database = AppDatabase.class)
 public class UserDbModel extends BaseModel {
 

@@ -16,6 +16,10 @@ import ru.zuma.ikraqualifying.database.DbManager;
 import ru.zuma.ikraqualifying.database.model.User;
 import ru.zuma.ikraqualifying.utils.ImageDecoder;
 
+/**
+ * Активность, отвечающая за отображение
+ * информации об участнике.
+ */
 public class ParticipantInfoActivity extends AppCompatActivity {
 
     private static final String TAG = ParticipantInfoActivity.class.getName();
