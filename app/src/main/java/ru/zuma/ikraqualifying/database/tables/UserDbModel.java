@@ -12,22 +12,22 @@ import ru.zuma.ikraqualifying.database.model.User;
 public class UserDbModel extends BaseModel {
 
     @PrimaryKey(autoincrement = true)
-    long id;
+    private long id;
 
     @Column
-    String name;
+    private String name;
 
     @Column
-    String secondName;
+    private String secondName;
 
     @Column
-    String thirdName;
+    private String thirdName;
 
     @Column
-    String group;
+    private String group;
 
     @Column
-    String about;
+    private String about;
 
     public UserDbModel()
     {

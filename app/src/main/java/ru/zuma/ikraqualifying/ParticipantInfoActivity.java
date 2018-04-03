@@ -1,8 +1,10 @@
 package ru.zuma.ikraqualifying;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.zuma.ikraqualifying.database.DbManager;
@@ -19,6 +21,7 @@ public class ParticipantInfoActivity extends AppCompatActivity {
         TextView fullName = (TextView) findViewById(R.id.tvFullName);
         TextView group = (TextView) findViewById(R.id.tvGroup);
         TextView aboutMe = (TextView) findViewById(R.id.tvAboutMe);
+        ImageView imageView = (ImageView) findViewById(R.id.tvImage);
 
         long id = getIntent().getLongExtra("participant_id", -1);
         User user = DbManager.getInstance().getUser(id);
@@ -26,6 +29,11 @@ public class ParticipantInfoActivity extends AppCompatActivity {
             /** TODO: Добавить обработку ошибок */
             Log.d(TAG, "User with ID " + String.valueOf(id) + " not found!");
             return;
+        }
+
+        Bitmap image = DbManager.getInstance().getUserImage(id);
+        if (image != null) {
+            imageView.setImageBitmap(image);
         }
 
         String name = user.getName() + " " + user.getSecondName() + " " + user.getThirdName();

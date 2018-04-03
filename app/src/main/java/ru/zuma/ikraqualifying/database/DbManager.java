@@ -1,11 +1,17 @@
 package ru.zuma.ikraqualifying.database;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.zuma.ikraqualifying.R;
 import ru.zuma.ikraqualifying.database.model.User;
+import ru.zuma.ikraqualifying.database.tables.ImageDbModel;
+import ru.zuma.ikraqualifying.database.tables.ImageDbModel_Table;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel_Table;
 
@@ -54,6 +60,27 @@ public class DbManager {
         if (dbUser == null)
             return null;
         return dbUser.toUser();
+    }
+
+    /**
+     * Возрващает изображение пользователя.
+     * Не работает, нужно переделать!
+     * @param id
+     * @return
+     */
+    @Deprecated
+    public Bitmap getUserImage(final long id) {
+        ImageDbModel dbImage = SQLite.select()
+                                        .from(ImageDbModel.class)
+                                        .where(ImageDbModel_Table.userId.eq(id))
+                                        .querySingle();
+        if (dbImage == null || dbImage.getImage() == null)
+            return null;
+
+        byte[] blob = dbImage.getImage().getBlob();
+        Bitmap image = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+
+        return image;
     }
 
     /**
