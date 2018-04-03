@@ -1,11 +1,14 @@
 package ru.zuma.ikraqualifying;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.net.URI;
 
 import ru.zuma.ikraqualifying.database.DbManager;
 import ru.zuma.ikraqualifying.database.model.User;
@@ -31,9 +34,9 @@ public class ParticipantInfoActivity extends AppCompatActivity {
             return;
         }
 
-        Bitmap image = DbManager.getInstance().getUserImage(id);
+        String image = user.getImage();
         if (image != null) {
-            imageView.setImageBitmap(image);
+            imageView.setImageURI(Uri.parse(image));
         }
 
         String name = user.getName() + " " + user.getSecondName() + " " + user.getThirdName();

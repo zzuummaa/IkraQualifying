@@ -29,6 +29,9 @@ public class UserDbModel extends BaseModel {
     @Column
     private String about;
 
+    @Column
+    private String image;
+
     public UserDbModel()
     {
     }
@@ -45,7 +48,7 @@ public class UserDbModel extends BaseModel {
 
     public User toUser()
     {
-        return new User(id, name, secondName, thirdName, group, about);
+        return new User(id, name, secondName, thirdName, group, about, image);
     }
 
     public long getId() {
@@ -94,5 +97,13 @@ public class UserDbModel extends BaseModel {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

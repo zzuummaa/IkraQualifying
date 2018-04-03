@@ -1,6 +1,7 @@
 package ru.zuma.ikraqualifying.database;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,10 +18,13 @@ import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import ru.zuma.ikraqualifying.App;
 import ru.zuma.ikraqualifying.R;
-import ru.zuma.ikraqualifying.database.tables.ImageDbModel;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel;
 
 /**
@@ -46,20 +50,30 @@ public class AppDatabase {
             initUser.setThirdName("OfUser");
             initUser.setGroup("H11");
             initUser.setAbout("Ok!");
-            long userId = initUser.insert(database);
+
+            Context context = App.getContext();
 
             Bitmap bitmap = BitmapFactory.decodeResource(App.getContext().getResources(),
                     R.drawable.photo1);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             final byte[] bytes = stream.toByteArray();
-            final Blob blob = new Blob(bytes);
 
-            ImageDbModel initImage = new ImageDbModel();
-            initImage.setUserId(userId);
-            initImage.setImage(blob);
-            /** Не получаестя нормально сохранить блоб */
-            initImage.save(database);
+            String image = null;
+            try {
+                FileOutputStream outputStream = context.openFileOutput("photo1.jpg",
+                        Context.MODE_PRIVATE);
+                outputStream.write(bytes);
+                outputStream.close();
+                image = new File(context.getFilesDir(), "photo1.jpg").getAbsolutePath();
+            } catch (FileNotFoundException e) {
+                Log.d(AppDatabase.class.getName(), e.getMessage(), e);
+            } catch (IOException e) {
+                Log.d(AppDatabase.class.getName(), e.getMessage(), e);
+            }
+
+            initUser.setImage(image);
+            initUser.insert(database);
         }
     }
 }

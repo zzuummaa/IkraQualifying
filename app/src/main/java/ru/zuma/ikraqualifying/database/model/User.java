@@ -12,18 +12,20 @@ public class User {
     private String thirdName;
     private String group;
     private String about;
+    private String image;
 
     public User()
     {
     }
 
-    public User(long id, String name, String secondName, String thirdName, String group, String about) {
+    public User(long id, String name, String secondName, String thirdName, String group, String about, String image) {
         this.id = id;
         this.name = name;
         this.secondName = secondName;
         this.thirdName = thirdName;
         this.group = group;
         this.about = about;
+        this.image = image;
     }
 
     public User(String name, String secondName, String thirdName, String group, String about) {
@@ -78,5 +80,13 @@ public class User {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

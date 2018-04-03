@@ -10,8 +10,6 @@ import java.util.List;
 
 import ru.zuma.ikraqualifying.R;
 import ru.zuma.ikraqualifying.database.model.User;
-import ru.zuma.ikraqualifying.database.tables.ImageDbModel;
-import ru.zuma.ikraqualifying.database.tables.ImageDbModel_Table;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel_Table;
 
@@ -70,17 +68,7 @@ public class DbManager {
      */
     @Deprecated
     public Bitmap getUserImage(final long id) {
-        ImageDbModel dbImage = SQLite.select()
-                                        .from(ImageDbModel.class)
-                                        .where(ImageDbModel_Table.userId.eq(id))
-                                        .querySingle();
-        if (dbImage == null || dbImage.getImage() == null)
-            return null;
-
-        byte[] blob = dbImage.getImage().getBlob();
-        Bitmap image = BitmapFactory.decodeByteArray(blob, 0, blob.length);
-
-        return image;
+        return null;
     }
 
     /**
