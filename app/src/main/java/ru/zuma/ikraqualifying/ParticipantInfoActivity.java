@@ -1,20 +1,14 @@
 package ru.zuma.ikraqualifying;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.net.URI;
-
 import ru.zuma.ikraqualifying.database.DbManager;
 import ru.zuma.ikraqualifying.database.model.User;
-import ru.zuma.ikraqualifying.utils.ImageDecoder;
 
 /**
  * Активность, отвечающая за отображение
@@ -31,7 +25,7 @@ public class ParticipantInfoActivity extends AppCompatActivity {
         TextView fullName = (TextView) findViewById(R.id.tvFullName);
         TextView group = (TextView) findViewById(R.id.tvGroup);
         TextView aboutMe = (TextView) findViewById(R.id.tvAboutMe);
-        final ImageView imageView = (ImageView) findViewById(R.id.tvImage);
+        final ImageView imageView = (ImageView) findViewById(R.id.ivPhoto);
 
         long id = getIntent().getLongExtra("participant_id", -1);
         User user = DbManager.getInstance().getUser(id);

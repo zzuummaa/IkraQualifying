@@ -5,6 +5,17 @@
     <string name="list_of_participants">Список участников</string>
     <string name="info_about_participant">Информация об участнике</string>
     <string name="participant">Участник</string>
+    <string name="name">Имя</string>
+    <string name="second_name">Фамилия</string>
+    <string name="third_name">Отчество</string>
     <string name="group">Группа</string>
     <string name="about_me">О себе</string>
+    <string name="add_photo">Добавить фото</string>
+    <string name="change_photo">Изменить фото</string>
+    <string name="remove_photo">Удалить фото</string>
+    <string name="save">Сохранить</string>
+    <string name="add">Добавить</string>
+    <string name="remove">Удалить</string>
+    <string name="not_supported">Не поддерживается</string>
+    <string name="invalid_user_data">Не верный формат данных</string>
 </resources>
