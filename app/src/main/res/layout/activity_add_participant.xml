@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/participant"
-                android:textSize="16dp"
+                android:textSize="24dp"
                 android:textColor="#000000"
                 android:paddingTop="9dp"/>
 
@@ -59,13 +59,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/name"
-                        android:textSize="12dp"
+                        android:textSize="16dp"
                         android:textColor="#000000"/>
                     <EditText
                         android:id="@+id/etName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12dp"
+                        android:textSize="16dp"
                         android:inputType="textCapSentences|textAutoCorrect"
                         android:textColor="#000000"/>
                 </TableRow>
@@ -74,13 +74,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/second_name"
-                        android:textSize="12dp"
+                        android:textSize="16dp"
                         android:textColor="#000000"/>
                     <EditText
                         android:id="@+id/etSecondName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="12dp"
+                        android:textSize="16dp"
                         android:inputType="textCapSentences|textAutoCorrect"
                         android:textColor="#000000"/>
                 </TableRow>
@@ -89,13 +89,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/third_name"
-                        android:textSize="12dp"
+                        android:textSize="16dp"
                         android:textColor="#000000"/>
                     <EditText
                         android:id="@+id/etThirdName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="12dp"
+                        android:textSize="16dp"
                         android:inputType="textCapSentences|textAutoCorrect"
                         android:textColor="#000000"/>
                 </TableRow>
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/group"
-                android:textSize="16dp"
+                android:textSize="24dp"
                 android:textColor="#000000"
                 android:paddingTop="9dp"/>
 
@@ -119,7 +119,7 @@
                 android:id="@+id/etGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:textSize="16dp"
                 android:textColor="#000000"/>
 
             <View
@@ -131,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/about_me"
-                android:textSize="16dp"
+                android:textSize="24dp"
                 android:textColor="#000000"
                 android:paddingTop="9dp"/>
 
@@ -139,7 +139,7 @@
                 android:id="@+id/etAboutMe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:textSize="16dp"
                 android:textColor="#000000"/>
 
             <View
