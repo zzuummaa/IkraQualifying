@@ -11,12 +11,11 @@ import ru.zuma.ikraqualifying.database.DbManager;
 import ru.zuma.ikraqualifying.database.model.User;
 
 /**
- * Активность, отвечающая за отображение
- * информации об участнике.
+ * Активность отображения информации об участнике.
  */
 public class ParticipantInfoActivity extends AppCompatActivity {
 
-    private static final String TAG = ParticipantInfoActivity.class.getName();
+    private static final String TAG = ParticipantInfoActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
