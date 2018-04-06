@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
             User user = users.get(i);
             addUserToActivity(user);
         }
-        Collections.sort(namesList);
 
         // находим список
         ListView lvParticipants = (ListView) findViewById(R.id.lvParticipants);
@@ -123,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
                 User user = DbManager.getInstance().getUser(userID);
                 addUserToActivity(user);
-                Collections.sort(namesList);
                 adapter.notifyDataSetChanged();
             }
         }
