@@ -1,18 +1,36 @@
 package ru.zuma.ikraqualifying.utils;
 
+/**
+ * Created by Stephan on 06.04.2018.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
 /**
- * Created by Stephan on 06.04.2018.
+ * Класс для получения пути к файлу по URI
  */
-
 public class RealPathUtil {
+
+    public static String getRealPathFromURI(Context context, Uri uri) {
+        String imagePath;
+
+        if (Build.VERSION.SDK_INT > 19) {
+            imagePath = getRealPathFromURI_API19(context, uri);
+        } else if (Build.VERSION.SDK_INT >= 11) {
+            imagePath = getRealPathFromURI_API11to18(context, uri);
+        } else {
+            imagePath = getRealPathFromURI_BelowAPI11(context, uri);
+        }
+
+        return imagePath;
+    }
 
     @SuppressLint("NewApi")
     public static String getRealPathFromURI_API19(Context context, Uri uri) {

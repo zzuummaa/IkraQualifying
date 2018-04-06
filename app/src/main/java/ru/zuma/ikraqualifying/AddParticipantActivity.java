@@ -29,8 +29,7 @@ import ru.zuma.ikraqualifying.utils.RealPathUtil;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 /**
- * Активность для добавления нового
- * участника команды
+ * Активность добавления нового участника команды
  */
 public class AddParticipantActivity extends AppCompatActivity {
     private final int PICK_PHOTO_RESULT = 1;
@@ -64,12 +63,14 @@ public class AddParticipantActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                /** Запрашиваем права для чтения файлов смартфона */
                 boolean isGranted = requestPermission(
                         AddParticipantActivity.this,
                         READ_EXTERNAL_STORAGE,
                         PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
                 );
 
+                /** Открываем галерею для выбора изображения */
                 if (isGranted) {
                     Intent intent = new Intent();
                     intent.setType("image/*");
@@ -95,6 +96,7 @@ public class AddParticipantActivity extends AppCompatActivity {
             }
         });
 
+        /** Запрашиваем права для чтения файлов смартфона */
         requestPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE,
                 PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
     }
@@ -108,19 +110,14 @@ public class AddParticipantActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_PHOTO_RESULT && resultCode == Activity.RESULT_OK) {
+            /** Обрабатываем фото, если оно успешно выбрано */
+
             // We need to recyle unused bitmaps
             if (bitmap != null) {
                 bitmap.recycle();
             }
 
-            String imagePath;
-            if (Build.VERSION.SDK_INT > 19) {
-                imagePath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
-            } else if (Build.VERSION.SDK_INT >= 11) {
-                imagePath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
-            } else {
-                imagePath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
-            }
+            String imagePath = RealPathUtil.getRealPathFromURI(this, data.getData());
 
             bitmap = ImageDecoder.decodeSampledBitmapFromResource(
                     imagePath,
@@ -141,6 +138,8 @@ public class AddParticipantActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save:
+                /** Пробуем сохранить нового пользователя */
+
                 User user = parseUserData(
                         nameEditText.getText().toString(),
                         secondNameEditText.getText().toString(),
@@ -157,6 +156,7 @@ public class AddParticipantActivity extends AppCompatActivity {
                 }
 
                 long userID = -1;
+                /** Сохраняем пользователя в БД с фотографией или без */
                 if (bitmap != null) {
                     userID = DbManager.getInstance().addUser(user, bitmap);
                 } else {
@@ -173,14 +173,16 @@ public class AddParticipantActivity extends AppCompatActivity {
     }
 
     /**
-     * Парсит данные о пользователе
+     * Парсит данные о пользователе. Обязательны для заполнения поля
+     * <code>name</code> и <code>secondName</code>. остальные поля могут быть
+     * пустыми (пустая строка).
      *
-     * @param name
-     * @param secondName
-     * @param thirdName
-     * @param group
-     * @param aboutMe
-     * @return
+     * @param name имя
+     * @param secondName фамилия
+     * @param thirdName отчество
+     * @param group группа
+     * @param aboutMe о пользователе
+     * @return пользователя или null, если формат не соблюден
      */
     private User parseUserData(String name, String secondName, String thirdName,
                                String group, String aboutMe) {
@@ -194,6 +196,14 @@ public class AddParticipantActivity extends AppCompatActivity {
         return user;
     }
 
+    /**
+     * Ассинхронный запрос привелегий.
+     *
+     * @param thisActivity
+     * @param permission {@link android.Manifest.permission}
+     * @param requestCode код для обработки колбэка результата запроса привелегий
+     * @return true если привелегии уже получены, false если еще не получены
+     */
     public boolean requestPermission(Activity thisActivity, String permission, int requestCode) {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(thisActivity,

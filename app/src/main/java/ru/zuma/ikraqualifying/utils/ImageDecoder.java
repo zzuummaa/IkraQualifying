@@ -11,10 +11,8 @@ import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import ru.zuma.ikraqualifying.App;
 
@@ -26,16 +24,16 @@ public class ImageDecoder {
     /** Качество сжатия по умолчанию */
     public static final int DEFAULT_COMPRESS_QUALITY = 60;
 
-    /** Максимальная высота изображения в DPI */
-    public static final int MAX_HEIGHT_DPI = 180;
+    /** Предпочтительная высота изображения в DPI */
+    public static final int PREF_HEIGHT_DPI = 180;
 
-    /** Максимальные размеры изображения в пикселах */
-    public static final int MAX_HEIGHT;
-    public static final int MAX_WIDTH;
+    /** Предпочтительные размеры изображения в пикселах */
+    public static final int PREF_HEIGHT;
+    public static final int PREF_WIDTH;
 
     static {
-        MAX_HEIGHT = (int) (MAX_HEIGHT_DPI * Resources.getSystem().getDisplayMetrics().density);
-        MAX_WIDTH = MAX_HEIGHT;
+        PREF_HEIGHT = (int) (PREF_HEIGHT_DPI * Resources.getSystem().getDisplayMetrics().density);
+        PREF_WIDTH = PREF_HEIGHT;
     }
 
     /**
@@ -97,16 +95,36 @@ public class ImageDecoder {
 
     /**
      * Читает данные изображения и изменяет размер изображения
-     * под специальный размер для отображения на экран
+     * для лучшего соответствия предпочтительному размеру
+     *
+     * Предпочитаемый размер изображения:
+     * {@link #PREF_WIDTH}
+     * {@link #PREF_HEIGHT}
+     *
+     * Алгоритм изменения размера изображения:
+     * {@link #calculateInSampleSize(BitmapFactory.Options, int, int)}
      *
      * @param res Ресурсы приложения
      * @param id ID ресурса
      * @return Выходное изображение с подогнанным размером
      */
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int id) {
-        return decodeSampledBitmapFromResource(res, id, MAX_WIDTH, MAX_HEIGHT);
+        return decodeSampledBitmapFromResource(res, id, PREF_WIDTH, PREF_HEIGHT);
     }
 
+    /**
+     * Алгоритм подгонки размера исходного изображения под предпочтительный размер.
+     * Находит коэффициент, показывающий, во сколько раз необходимо уменьшить высоту
+     * и ширину исходного изображения. Новые высота и ширина в 2^N раз уменьшены по
+     * отношению к исходному изображению. Оба размера больше предпочтительных и N
+     * минимально возможное целое число.
+     *
+     *
+     * @param options информация об исходном изображении
+     * @param reqWidth предпочтительная ширина
+     * @param reqHeight предпочтительная высота
+     * @return множитель уменьшения размеров - 2^N
+     */
     public static int calculateInSampleSize(BitmapFactory.Options options,
                                             int reqWidth, int reqHeight) {
         // Реальные размеры изображения

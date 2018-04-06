@@ -12,13 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ru.zuma.ikraqualifying.database.DbManager;
 import ru.zuma.ikraqualifying.database.model.User;
@@ -26,17 +22,19 @@ import ru.zuma.ikraqualifying.database.model.User;
 import static android.widget.AdapterView.*;
 
 /**
- * Главная активность приложения.
- * Содержит список участников команды.
+ * Активность отображения списка участников команды.
  */
 public class MainActivity extends AppCompatActivity {
     final String LOG_TAG = "MainActivity";
     final int ADD_RESULT = 1;
 
-    // Convert list key to dataBase key
+    /** Карта конвертации индекса списка участников в id БД */
     HashMap<Integer, Long> toDataBaseKey;
 
-    List<String> namesList;
+    /** Список участников */
+    List<String> participantList;
+
+    /** Адаптер для отображения списка участников на экране */
     ArrayAdapter<String> adapter;
 
     @Override
@@ -46,9 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
         List<User> users = DbManager.getInstance().getUsers();
 
-        // Put data like this: toDataBaseKey.put(listIndex, dataBaseID);
         toDataBaseKey = new HashMap<>();
-        namesList = new ArrayList<>();
+        participantList = new ArrayList<>();
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
             addUserToActivity(user);
@@ -59,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         // создаем адаптер
         adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, namesList);
+                android.R.layout.simple_list_item_1, participantList);
 
         // присваиваем адаптер списку
         lvParticipants.setAdapter(adapter);
@@ -80,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d(LOG_TAG, "list onItemClick in pos=" + position + ", id=" + id);
 
+                /** Вызываем activity отображения информации об участнике */
                 Intent intent = new Intent(MainActivity.this, ParticipantInfoActivity.class);
                 intent.putExtra("participant_id", toDataBaseKey.get(position));
                 startActivity(intent);
@@ -97,13 +95,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add:
+                /** Вызываем activity добавление участника */
                 Intent intent = new Intent(MainActivity.this, AddParticipantActivity.class);
                 startActivityForResult(intent, ADD_RESULT);
                 return true;
+
             case R.id.remove:
                 // TODO: реализовать функционал
                 Toast.makeText(this, R.string.not_supported, Toast.LENGTH_SHORT).show();
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_RESULT) {
             if (resultCode == RESULT_OK) {
+                /** Отображаем созданного участника */
 
                 long userID = data.getLongExtra("user_id", -1);
                 if (userID == -1) {
@@ -129,8 +131,20 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * Добавляет пользователя в струтуры, свзяанные с activity.
+     *
+     * !Не обновляет отображемые данные!
+     *
+     * Для отображения изменений необходимо вызвать
+     * <code>adapter.notifyDataSetChanged()</code>
+     *
+     * {@link #adapter}
+     *
+     * @param user
+     */
     public void addUserToActivity(User user) {
-        namesList.add(user.getName());
-        toDataBaseKey.put(namesList.size() - 1, user.getId());
+        participantList.add(user.getName() + " " + user.getSecondName());
+        toDataBaseKey.put(participantList.size() - 1, user.getId());
     }
 }
