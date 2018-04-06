@@ -23,8 +23,13 @@ import ru.zuma.ikraqualifying.App;
  */
 public class ImageDecoder {
 
+    /** Качество сжатия по умолчанию */
+    public static final int DEFAULT_COMPRESS_QUALITY = 60;
+
+    /** Максимальная высота изображения в DPI */
     public static final int MAX_HEIGHT_DPI = 180;
 
+    /** Максимальные размеры изображения в пикселах */
     public static final int MAX_HEIGHT;
     public static final int MAX_WIDTH;
 
@@ -37,10 +42,10 @@ public class ImageDecoder {
      * Читает данные изображения и изменяет размер изображения
      * под требуемый
      *
-     * @param path полный путь к файлу
-     * @param reqWidth требуемая ширина выходного изображения
-     * @param reqHeight требуемая высота выходного изображения
-     * @return выходное изображение с подогнанным размером
+     * @param path Полный путь к файлу
+     * @param reqWidth Требуемая ширина выходного изображения
+     * @param reqHeight Требуемая высота выходного изображения
+     * @return Выходное изображение с подогнанным размером
      */
     public static Bitmap decodeSampledBitmapFromResource(String path,
                                                          int reqWidth, int reqHeight) {
@@ -67,9 +72,9 @@ public class ImageDecoder {
      *
      * @param res
      * @param id
-     * @param reqWidth требуемая ширина выходного изображения
-     * @param reqHeight требуемая высота выходного изображения
-     * @return выходное изображение с подогнанным размером
+     * @param reqWidth Требуемая ширина выходного изображения
+     * @param reqHeight Требуемая высота выходного изображения
+     * @return Выходное изображение с подогнанным размером
      */
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int id,
                                                          int reqWidth, int reqHeight) {
@@ -94,9 +99,9 @@ public class ImageDecoder {
      * Читает данные изображения и изменяет размер изображения
      * под специальный размер для отображения на экран
      *
-     * @param res
-     * @param id
-     * @return
+     * @param res Ресурсы приложения
+     * @param id ID ресурса
+     * @return Выходное изображение с подогнанным размером
      */
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int id) {
         return decodeSampledBitmapFromResource(res, id, MAX_WIDTH, MAX_HEIGHT);
@@ -126,7 +131,7 @@ public class ImageDecoder {
     }
 
     /**
-     * Сохраняет изображение Bitmap в файл.
+     * Сохраняет изображение Bitmap в файл JPEG.
      *
      * @param bitmap Bitmap изображение
      * @param quality Качество (характеризует отсутствие потерь)

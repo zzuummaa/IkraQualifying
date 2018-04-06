@@ -28,6 +28,10 @@ import ru.zuma.ikraqualifying.utils.RealPathUtil;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
+/**
+ * Активность для добавления нового
+ * участника команды
+ */
 public class AddParticipantActivity extends AppCompatActivity {
     private final int PICK_PHOTO_RESULT = 1;
     private final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -169,6 +173,7 @@ public class AddParticipantActivity extends AppCompatActivity {
     }
 
     /**
+     * Парсит данные о пользователе
      *
      * @param name
      * @param secondName
@@ -187,20 +192,6 @@ public class AddParticipantActivity extends AppCompatActivity {
         User user = new User(name, secondName, thirdName, group, aboutMe);
 
         return user;
-    }
-
-    private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
     }
 
     public boolean requestPermission(Activity thisActivity, String permission, int requestCode) {

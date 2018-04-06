@@ -22,6 +22,7 @@ import java.util.List;
 import ru.zuma.ikraqualifying.App;
 import ru.zuma.ikraqualifying.R;
 import ru.zuma.ikraqualifying.database.model.User;
+import ru.zuma.ikraqualifying.database.model.UserFactory;
 import ru.zuma.ikraqualifying.database.tables.UserDbModel;
 import ru.zuma.ikraqualifying.utils.ImageDecoder;
 
@@ -35,8 +36,10 @@ public class AppDatabase {
 
     private static final String TAG = AppDatabase.class.getName();
 
+    /** Имя базы */
     public static final String NAME = "AppDatabase";
 
+    /** Версия базы */
     public static final int VERSION = 1;
 
     /**
@@ -67,11 +70,11 @@ public class AppDatabase {
          */
         private List<User> createDevelopers() {
 
-            User stepa = createUser("Степан", "Фоменко", "Владимирович",
+            User stepa = UserFactory.createUser("Степан", "Фоменко", "Владимирович",
                     "СМ5-62", "О Степе", R.drawable.stepa, "strepa.jpg");
-            User artem = createUser("Артем", "Ткаченко", "Алексеевич",
+            User artem = UserFactory.createUser("Артем", "Ткаченко", "Алексеевич",
                     "ИУ7", "Об Артеме", R.drawable.artem, "artem.jpg");
-            User timur = createUser("Тимур", "Ахтямов", "Ришадович",
+            User timur = UserFactory.createUser("Тимур", "Ахтямов", "Ришадович",
                     "СМ5-61", "О Тимуре", R.drawable.timur, "timur.jpg");
 
             List<User> users = new ArrayList<>();
@@ -82,38 +85,5 @@ public class AppDatabase {
             return users;
         }
 
-        /**
-         * Создает пользователя и копирует
-         * его изображение из ресурсов в
-         * файловое хранилище.
-         *
-         * @param name Имя пользователя
-         * @param secondName Фамилия пользователя
-         * @param thirdName Отчество пользователя
-         * @param group Учебная группа пользователя
-         * @param about Информация о пользователе
-         * @param imageId ID ресурса - фото пользователя
-         * @param imageFileName Имя файла, в котором будет сохранено изображение
-         * @return Объект пользователя
-         */
-        private User createUser(String name, String secondName, String thirdName,
-                                String group, String about, int imageId, String imageFileName) {
-
-            User user = new User(name, secondName, thirdName, group, about);
-
-            Bitmap bitmap = ImageDecoder.decodeSampledBitmapFromResource(
-                    App.getContext().getResources(), imageId);
-
-            String image = null;
-            try {
-                File imageFile = ImageDecoder.saveBitmapToFile(bitmap, 60, imageFileName);
-                image = imageFile.getAbsolutePath();
-            } catch (IOException e) {
-                Log.e(TAG, e.getMessage(), e);
-            }
-            user.setImage(image);
-
-            return user;
-        }
     }
 }

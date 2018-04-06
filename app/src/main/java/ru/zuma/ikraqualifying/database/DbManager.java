@@ -86,15 +86,14 @@ public class DbManager {
         newDbUser.setAbout(user.getAbout());
         newDbUser.setImage(user.getImage());
 
-        long newId = newDbUser.insert();
-
-        return newId;
+        return newDbUser.insert();
     }
 
     /**
      * Добавляет нового пользователя (участника) в базу.
      *
      * @param user Пользователь для добавления
+     * @param bitmap Фото пользователя
      * @return ID новой записи в базе. ID и путь к фото пользователя,
      * переданного в метод, игнорируется.
      */
@@ -113,7 +112,8 @@ public class DbManager {
         String image = null;
         try {
             String fileName = String.valueOf(newId) + ".jpg";
-            File imageFile = ImageDecoder.saveBitmapToFile(bitmap, 60, fileName);
+            File imageFile = ImageDecoder.saveBitmapToFile(bitmap,
+                    ImageDecoder.DEFAULT_COMPRESS_QUALITY, fileName);
             image = imageFile.getAbsolutePath();
         } catch (IOException e) {
             Log.e(TAG, e.getMessage(), e);
@@ -124,5 +124,48 @@ public class DbManager {
         newDbUser.update();
 
         return newId;
+    }
+
+    /**
+     * Обновляет данные о пользователе (участнике) в базе
+     * @param user Данные о пользователе
+     * @return true, если запись была обновлена
+     */
+    public boolean updateUser(final User user) {
+        UserDbModel dbUser = SQLite.select()
+                .from(UserDbModel.class)
+                .where(UserDbModel_Table.id.eq(user.getId()))
+                .querySingle();
+
+        if (dbUser == null) {
+            return false;
+        }
+
+        dbUser.setName(user.getName());
+        dbUser.setSecondName(user.getSecondName());
+        dbUser.setThirdName(user.getThirdName());
+        dbUser.setGroup(user.getGroup());
+        dbUser.setAbout(user.getAbout());
+        dbUser.setImage(user.getImage());
+
+        return dbUser.update();
+    }
+
+    /**
+     * Удаляет данные о пользователе (участнике) из базы
+     * @param id ID пользователя
+     * @return true, если запись была удалена
+     */
+    public boolean deleteUser(final long id) {
+        UserDbModel dbUser = SQLite.select()
+                .from(UserDbModel.class)
+                .where(UserDbModel_Table.id.eq(id))
+                .querySingle();
+
+        if (dbUser == null) {
+            return false;
+        }
+
+        return dbUser.delete();
     }
 }
