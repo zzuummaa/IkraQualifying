@@ -16,6 +16,8 @@
     <string name="save">Сохранить</string>
     <string name="add">Добавить</string>
     <string name="remove">Удалить</string>
+    <string name="accept">Принять</string>
+    <string name="cancel">Отменить</string>
     <string name="not_supported">Не поддерживается</string>
     <string name="invalid_user_data">Не верный формат данных</string>
 </resources>

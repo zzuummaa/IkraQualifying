@@ -168,4 +168,23 @@ public class DbManager {
 
         return dbUser.delete();
     }
+
+    public User deleteUserAndGet(final long id) {
+        UserDbModel dbUser = SQLite.select()
+                .from(UserDbModel.class)
+                .where(UserDbModel_Table.id.eq(id))
+                .querySingle();
+
+        if (dbUser == null) {
+            return null;
+        }
+
+        User user = dbUser.toUser();
+
+        if (dbUser.delete()) {
+            return user;
+        } else {
+            return null;
+        }
+    }
 }

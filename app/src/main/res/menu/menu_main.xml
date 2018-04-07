@@ -15,4 +15,20 @@
         android:icon="@drawable/ic_add_24dp"
         app:showAsAction="always">
     </item>
+
+    <item
+        android:id="@+id/cancel"
+        android:title="@string/cancel"
+        android:icon="@drawable/ic_cancel_24dp"
+        android:visible="false"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/accept"
+        android:title="@string/accept"
+        android:icon="@drawable/ic_accept_24dp"
+        android:visible="false"
+        app:showAsAction="always">
+    </item>
 </menu>

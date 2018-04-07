@@ -30,7 +30,7 @@ public class ParticipantInfoActivity extends AppCompatActivity {
         User user = DbManager.getInstance().getUser(id);
         if (user == null) {
             /** TODO: Добавить обработку ошибок */
-            Log.d(TAG, "User with ID " + String.valueOf(id) + " not found!");
+            Log.e(TAG, "User with ID " + String.valueOf(id) + " not found!");
             return;
         }
 

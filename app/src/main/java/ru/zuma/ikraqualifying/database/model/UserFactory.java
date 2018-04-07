@@ -51,4 +51,13 @@ public class UserFactory {
 
         return user;
     }
+
+    public static boolean deleteUserData(User user) {
+        if (user.getImage() != null) {
+            File imageFile = new File(user.getImage());
+            return imageFile.delete();
+        } else {
+            return true;
+        }
+    }
 }

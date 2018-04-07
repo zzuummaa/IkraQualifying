@@ -4,20 +4,23 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import ru.zuma.ikraqualifying.database.DbManager;
 import ru.zuma.ikraqualifying.database.model.User;
+import ru.zuma.ikraqualifying.database.model.UserFactory;
 
 import static android.widget.AdapterView.*;
 
@@ -28,14 +31,19 @@ public class MainActivity extends AppCompatActivity {
     final String LOG_TAG = "MainActivity";
     final int ADD_RESULT = 1;
 
+    Menu menu;
+
     /** Карта конвертации индекса списка участников в id БД */
-    HashMap<Integer, Long> toDataBaseKey;
+    List<Long> toDataBaseKey;
 
     /** Список участников */
     List<String> participantList;
 
     /** Адаптер для отображения списка участников на экране */
-    ArrayAdapter<String> adapter;
+    ArrayAdapter<String> simpleItemAdapter;
+    ArrayAdapter<String> multiplyChoiceAdapter;
+
+    ListView lvParticipants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +52,26 @@ public class MainActivity extends AppCompatActivity {
 
         List<User> users = DbManager.getInstance().getUsers();
 
-        toDataBaseKey = new HashMap<>();
+        toDataBaseKey = new ArrayList<>();
         participantList = new ArrayList<>();
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
             addUserToActivity(user);
         }
 
-        // находим список
-        ListView lvParticipants = (ListView) findViewById(R.id.lvParticipants);
-
         // создаем адаптер
-        adapter = new ArrayAdapter<String>(this,
+        simpleItemAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, participantList);
 
+        multiplyChoiceAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_multiple_choice, participantList);
+
+        // находим список
+        lvParticipants = (ListView) findViewById(R.id.lvParticipants);
+        lvParticipants.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
         // присваиваем адаптер списку
-        lvParticipants.setAdapter(adapter);
+        lvParticipants.setAdapter(simpleItemAdapter);
 
         lvParticipants.setOnItemClickListener(new OnItemClickListener() {
             long prevTime;
@@ -67,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (lvParticipants.getAdapter() != simpleItemAdapter) {
+                    return;
+                }
 
                 // Обрабатываем событие только раз в cd миллисекундах
                 long currTime = System.currentTimeMillis();
@@ -87,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -101,10 +117,65 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.remove:
-                // TODO: реализовать функционал
-                Toast.makeText(this, R.string.not_supported, Toast.LENGTH_SHORT).show();
+                /** Показываем меню удаления участников */
+
+                showChangeActionBar();
+                lvParticipants.setAdapter(multiplyChoiceAdapter);
+
                 return true;
 
+            case R.id.accept:
+                /** Удаляем выделенных пользователей и возвращаем главное меню */
+
+                SparseBooleanArray sbArray = lvParticipants.getCheckedItemPositions();
+
+                /** Коллекция для хранения индексов удаляемых объектов */
+                List<Integer> removing = new ArrayList<>(sbArray.size());
+
+                for (int i = 0; i < sbArray.size(); i++) {
+                    int listViewIndex = sbArray.keyAt(i);
+
+                    if (sbArray.get(listViewIndex)) {
+                        /** Удаляем данные об участнике */
+
+                        User user = DbManager.getInstance()
+                                .deleteUserAndGet(toDataBaseKey.get(listViewIndex));
+
+                        if (user == null) {
+                            Log.e(LOG_TAG, "deleteUserAndGet() can't delete user");
+                            continue;
+                        }
+
+                        if (!UserFactory.deleteUserData(user)) {
+                            Log.e(LOG_TAG, "deleteUserData() can't delete user data");
+                            continue;
+                        }
+
+                        removing.add(listViewIndex);
+                    }
+                }
+
+                /**
+                 * Удаляем данные отображения, учитывая,
+                 * что индексы после удаления сдвигаются.
+                 */
+                Collections.sort(removing);
+                for (int i = 0; i < removing.size(); i++) {
+                    removeUserFromActivity(removing.get(i) - i);
+                }
+
+                showMainActionBar();
+                lvParticipants.setAdapter(simpleItemAdapter);
+
+                return true;
+
+            case R.id.cancel:
+                /** Отменяем процесс удаления, возврщая главное меню */
+
+                showMainActionBar();
+                lvParticipants.setAdapter(simpleItemAdapter);
+
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -124,7 +195,8 @@ public class MainActivity extends AppCompatActivity {
 
                 User user = DbManager.getInstance().getUser(userID);
                 addUserToActivity(user);
-                adapter.notifyDataSetChanged();
+                simpleItemAdapter.notifyDataSetChanged();
+                multiplyChoiceAdapter.notifyDataSetChanged();
             }
         }
 
@@ -137,14 +209,50 @@ public class MainActivity extends AppCompatActivity {
      * !Не обновляет отображемые данные!
      *
      * Для отображения изменений необходимо вызвать
-     * <code>adapter.notifyDataSetChanged()</code>
+     * <code>
+     *     simpleItemAdapter.notifyDataSetChanged();
+     *     multiplyChoiceAdapter.notifyDataSetChanged();
+     * </code>
      *
-     * {@link #adapter}
+     * {@link #simpleItemAdapter}
+     * {@link #multiplyChoiceAdapter}
      *
-     * @param user
+     * @param user пользователь для отображения в activity
      */
     public void addUserToActivity(User user) {
         participantList.add(user.getName() + " " + user.getSecondName());
-        toDataBaseKey.put(participantList.size() - 1, user.getId());
+        toDataBaseKey.add(user.getId());
+    }
+
+    /**
+     * Удаляет пользователя из струтур, свзяанных с activity.
+     *
+     * @param listViewIndex индекс пользователя из списка участников
+     */
+    public void removeUserFromActivity(int listViewIndex) {
+        participantList.remove(listViewIndex);
+        toDataBaseKey.remove(listViewIndex);
+    }
+
+    /**
+     * Показывает значки меню для изменения списка участников
+     */
+    public void showChangeActionBar() {
+        menu.findItem(R.id.add).setVisible(false);
+        menu.findItem(R.id.remove).setVisible(false);
+
+        menu.findItem(R.id.accept).setVisible(true);
+        menu.findItem(R.id.cancel).setVisible(true);
+    }
+
+    /**
+     * Показывает главные значки меню
+     */
+    public void showMainActionBar() {
+        menu.findItem(R.id.accept).setVisible(false);
+        menu.findItem(R.id.cancel).setVisible(false);
+
+        menu.findItem(R.id.add).setVisible(true);
+        menu.findItem(R.id.remove).setVisible(true);
     }
 }
