@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add:
                 /** Вызываем activity добавление участника */
+
                 Intent intent = new Intent(MainActivity.this, AddParticipantActivity.class);
                 startActivityForResult(intent, ADD_RESULT);
                 return true;
@@ -166,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 lvParticipants.setAdapter(simpleItemAdapter);
 
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

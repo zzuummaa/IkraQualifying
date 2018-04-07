@@ -169,6 +169,12 @@ public class DbManager {
         return dbUser.delete();
     }
 
+    /**
+     * Удаляет данные о пользователе (участнике) из базы
+     *
+     * @param id ID пользователя
+     * @return удаленного пользователя, либо null (если не был удален)
+     */
     public User deleteUserAndGet(final long id) {
         UserDbModel dbUser = SQLite.select()
                 .from(UserDbModel.class)
