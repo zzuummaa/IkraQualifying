@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.zuma.ikraqualifying.AddParticipantActivity"
-    android:layout_margin="18dp">
+    android:layout_margin="18dp"
+    tools:context="ru.zuma.ikraqualifying.AddParticipantActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:scaleType="fitStart"
-                android:src="@drawable/empty_photo"/>
+                android:src="@drawable/empty_photo" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,122 +31,88 @@
                     android:id="@+id/btAddPhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_photo"
-                    android:layout_marginRight="12dp"/>
+                    android:layout_marginRight="12dp"
+                    android:text="@string/add_photo" />
 
                 <Button
                     android:id="@+id/btRemovePhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/remove_photo"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/participant"
-                android:textSize="24dp"
-                android:textColor="#000000"
-                android:paddingTop="9dp"/>
 
-            <TableLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/participant"
+                    android:textColor="@color/primaryText"
+                    android:textSize="18dp" />
+
+
+
+            <EditText
+                android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="1">
-
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/name"
-                        android:textSize="16dp"
-                        android:textColor="#000000"/>
-                    <EditText
-                        android:id="@+id/etName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:inputType="textCapSentences|textAutoCorrect"
-                        android:textColor="#000000"/>
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/second_name"
-                        android:textSize="16dp"
-                        android:textColor="#000000"/>
-                    <EditText
-                        android:id="@+id/etSecondName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:inputType="textCapSentences|textAutoCorrect"
-                        android:textColor="#000000"/>
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/third_name"
-                        android:textSize="16dp"
-                        android:textColor="#000000"/>
-                    <EditText
-                        android:id="@+id/etThirdName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:inputType="textCapSentences|textAutoCorrect"
-                        android:textColor="#000000"/>
-                </TableRow>
-
-            </TableLayout>
-
-            <View
-                android:layout_width="wrap_content"
-                android:background="@drawable/line"
-                android:layout_height="1dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/group"
-                android:textSize="24dp"
+                android:inputType="textCapSentences|textAutoCorrect"
                 android:textColor="#000000"
-                android:paddingTop="9dp"/>
+                android:hint="@string/name"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etSecondName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences|textAutoCorrect"
+                android:textColor="#000000"
+                android:hint="@string/second_name"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etThirdName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences|textAutoCorrect"
+                android:textColor="#000000"
+                android:hint="@string/third_name"
+                android:textSize="16dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/group"
+                    android:textColor="@color/primaryText"
+                    android:textSize="18dp" />
+
 
             <EditText
                 android:id="@+id/etGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="#000000"/>
-
-            <View
-                android:layout_width="wrap_content"
-                android:background="@drawable/line"
-                android:layout_height="1dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/about_me"
-                android:textSize="24dp"
                 android:textColor="#000000"
-                android:paddingTop="9dp"/>
+                android:hint="@string/group_full"
+                android:textSize="16dp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_me"
+                    android:textColor="@color/primaryText"
+                    android:textSize="18dp" />
 
             <EditText
                 android:id="@+id/etAboutMe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:hint="@string/about_full"
+                android:textSize="16dp" />
 
-            <View
-                android:layout_width="wrap_content"
-                android:background="@drawable/line"
-                android:layout_height="1dp" />
+
         </LinearLayout>
     </ScrollView>
 

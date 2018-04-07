@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.zuma.ikraqualifying.ParticipantInfoActivity"
-    android:layout_margin="18dp">
+    android:layout_margin="18dp"
+    tools:context="ru.zuma.ikraqualifying.ParticipantInfoActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -13,74 +13,65 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="9dp">
 
             <ImageView
                 android:id="@+id/ivPhoto"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:src="@drawable/empty_photo"
-                android:scaleType="fitStart"/>
+                android:scaleType="fitStart"
+                android:src="@drawable/empty_photo" />
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="12dp"
                 android:text="@string/participant"
-                android:textSize="24dp"
-                android:textColor="#000000"
-                android:paddingTop="9dp"/>
+                android:textColor="@color/secondaryText"
+                android:textSize="14dp" />
+
 
             <TextView
                 android:id="@+id/tvFullName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:textSize="18dp" />
 
-            <View
-                android:layout_width="wrap_content"
-                android:background="@drawable/line"
-                android:layout_height="1dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="9dp"
                 android:text="@string/group"
-                android:textSize="24dp"
-                android:textColor="#000000"
-                android:paddingTop="9dp"/>
+                android:textColor="@color/secondaryText"
+                android:textSize="14dp" />
+
 
             <TextView
                 android:id="@+id/tvGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="#000000"/>
-
-            <View
-                android:layout_width="wrap_content"
-                android:background="@drawable/line"
-                android:layout_height="1dp" />
+                android:textColor="#000000"
+                android:textSize="18dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/about_me"
-                android:textSize="24dp"
-                android:textColor="#000000"
-                android:paddingTop="9dp"/>
+                android:paddingTop="9dp"
+                android:text="@string/about_participant"
+                android:textColor="@color/secondaryText"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tvAboutMe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:textSize="18dp" />
 
-            <View
-                android:layout_width="wrap_content"
-                android:background="@drawable/line"
-                android:layout_height="1dp" />
         </LinearLayout>
     </ScrollView>
 
