@@ -20,4 +20,7 @@
     <string name="cancel">Отменить</string>
     <string name="not_supported">Не поддерживается</string>
     <string name="invalid_user_data">Не верный формат данных</string>
+    <string name="group_full">Номер учебной группы</string>
+    <string name="about_full">Коротко о себе</string>
+    <string name="about_participant">Об участнике</string>
 </resources>
