@@ -129,10 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
                 SparseBooleanArray sbArray = lvParticipants.getCheckedItemPositions();
 
-                /** Коллекция для хранения индексов удаляемых объектов */
-                List<Integer> removing = new ArrayList<>(sbArray.size());
-
-                for (int i = 0; i < sbArray.size(); i++) {
+                for (int i = sbArray.size() - 1; i >= 0; i--) {
                     int listViewIndex = sbArray.keyAt(i);
 
                     if (sbArray.get(listViewIndex)) {
@@ -151,21 +148,14 @@ public class MainActivity extends AppCompatActivity {
                             continue;
                         }
 
-                        removing.add(listViewIndex);
+                        removeUserFromActivity(listViewIndex);
                     }
-                }
-
-                /**
-                 * Удаляем данные отображения, учитывая,
-                 * что индексы после удаления сдвигаются.
-                 */
-                Collections.sort(removing);
-                for (int i = 0; i < removing.size(); i++) {
-                    removeUserFromActivity(removing.get(i) - i);
                 }
 
                 showMainActionBar();
                 lvParticipants.setAdapter(simpleItemAdapter);
+                simpleItemAdapter.notifyDataSetChanged();
+                multiplyChoiceAdapter.notifyDataSetChanged();
 
                 return true;
 
